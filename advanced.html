@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Search</title>
+        <link rel="stylesheet" href="styles.css">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    </head>
+
+    <body>
+        <div style="text-align: right;">
+            <a href="index.html" id="top_right_button">Back To Home</a>
+        </div>
+        <img src="Google_2015_logo.svg.png" id="top_left_google">
+        <h1 id="headers">
+            Advanced Search
+        </h1>
+        <hr>
+        <h2 id="headers">
+            Find pages with...
+        </h2>
+        
+        <form method="get" action="https://www.google.com/search">   
+            
+            <table class="points">
+                <tr>
+                    <td>All of these words: </td>
+                    <td><input type="text" name="as_q" size="70" id="input_fields"></td>
+                </tr>
+                <tr>
+                    <td>This exact word or phrase: </td>
+                    <td><input type="text" name="as_epq" size="70" id="input_fields"></td>
+                </tr>
+                <tr>
+                    <td>Any of these words: </td>
+                    <td><input type="text" name="as_oq" size="70" id="input_fields"></td>
+                </tr>
+                <tr>
+                    <td>None of these words: </td>
+                    <td><input type="text" name="as_eq" size="70" id="input_fields"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Advanced Search" id="advanced_search"></td>
+                </tr>
+            </table>
+        </form>
+    </body>
+</html>
