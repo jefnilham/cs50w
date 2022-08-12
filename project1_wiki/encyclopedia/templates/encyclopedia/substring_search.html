@@ -1,0 +1,26 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Search Complete!
+{% endblock %}
+
+{% block body %}
+
+    <h1>All Pages that matches search term "{{ search_query }}".</h1>
+
+    <ul>
+        {% if search_query_match_substring|length > 0 %}
+            {% for entry in search_query_match_substring %}
+                <li>
+                    <a href="{% url 'entry' entry %}">{{ entry }}</a>
+                </li>
+            {% endfor %}
+        {% else %}
+            <li>
+                No results for "{{ search_query }}".
+            </li>
+
+        {% endif %}
+    </ul>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block body %}
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+
+    {{entry|safe}}
+
+
+    <form action="{% url 'edit' title %}" method="get">
+        {% csrf_token %}
+        <button class="button" type="submit">Edit Entry</button>
+    </form>
+{% endblock %}

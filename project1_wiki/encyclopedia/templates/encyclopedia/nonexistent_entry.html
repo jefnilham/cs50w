@@ -1,0 +1,23 @@
+{% extends "encyclopedia/layout.html" %}
+
+
+
+{% block title %}
+    Error!
+{% endblock %}
+
+{% block body %}
+
+    <div class="alert" style="padding: 20px; background-color: #f44336; color: white;">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+        <strong>Error! No results.</strong>
+    </div>
+
+    <h1>
+        Search term "{{title}}" not found in index of entries. 
+    </h1>
+    <body>
+        Try other search terms.
+    </body>
+
+{% endblock %}
