@@ -1,0 +1,121 @@
+body {
+background-color: #282828;
+}
+
+table.center {
+    margin-left: auto; 
+    margin-right: auto;
+}
+
+table {
+    padding: 200px 10px 10px 10px;
+}
+
+th, td {
+    border-collapse:collapse;
+    padding: 10px 10px 10px 10px;
+}
+
+#searchbar {
+    font-family: 'Open Sans', sans-serif;
+    font-size: medium;
+    border-radius: 25px;
+    border: 1px solid gray; 
+    height: 40px; 
+    padding-left:10px;
+    display:block;
+    margin: 0 auto;
+    background: transparent;
+    color: white;
+}
+
+#searchbar_images {
+    font-family: 'Open Sans', sans-serif;
+    font-size: medium;
+    border-radius: 25px;
+    border: 1px solid gray; 
+    height: 40px; 
+    padding-left:10px;
+    display:block;
+    margin: 0 auto;
+    width:400px;
+    background: transparent;
+    color: white;
+}
+
+#submit_button {
+    font-family: 'Open Sans', sans-serif;
+    font-size: large;
+    border-radius: 5px;
+    border: 1px solid gray;  
+    height: 40px; 
+    width: 150px;
+    cursor:pointer;
+    margin-top: 30px;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+#top_right_button {
+    font-family: 'Open Sans', sans-serif;
+    font-size: large;
+    text-align: right;
+    padding: 10px 10px 10px 10px;
+    text-decoration:none;
+    color: azure;
+}
+
+#top_right_button:hover {
+    text-decoration: underline;
+    color: azure;
+}
+
+#top_left_google {
+    margin-left: 20px;
+    width: 10%;
+}
+
+#headers {
+    margin-left: 50px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 1000;
+    color: white;
+}
+
+.points {
+    padding-top: 0%;
+    margin-left: 50px;
+    font-family: 'Open Sans', sans-serif;
+    color: white;
+    list-style-type: none;
+    vertical-align: auto;
+}
+
+#input_fields {
+    background: transparent;
+    color: white;
+    border: 1px solid 	#71a4f0;
+    width: 400px;
+    height: 20px;  
+    border-width: thin;
+    
+}
+
+#advanced_search {
+    font-family: 'Open Sans', sans-serif;
+    font-size: large;
+    text-align: right;
+    padding: 10px 10px 10px 10px;
+    text-decoration:none;
+    color: black;
+    background: #71a4f0;
+    font-weight: 100;
+    border: 1px solid gray;  
+}
+
+#textarea {
+    width : 150px;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
