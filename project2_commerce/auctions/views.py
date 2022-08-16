@@ -5,9 +5,11 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import User
+from .models import User, Listing
 from django import forms
 import datetime
+
+
 
 # category choices for CreateListingForm
 listing_item_category_list = [
@@ -29,7 +31,6 @@ class CreateListingForm(forms.Form):
 
 def index(request):
     return render(request, "auctions/index.html")
-
 
 def login_view(request):
     if request.method == "POST":
@@ -104,8 +105,23 @@ def create_listing(request):
             listing_item_image_url = form.cleaned_data['listing_item_image_url']
             listing_item_category = form.cleaned_data['listing_item_category']
 
-            # additional data for active listings (user posted and date of post)
-            username = request.user.username
-            listing_item_datetime = datetime.datetime.strptime(request.POST['time'], '%H:%M:%S').time()
+        # additional data for active listings (user posted and date of post)
+        listing_item_username = request.user.username
+        #listing_item_datetime = datetime.datetime.strptime(request.POST['time'], '%H:%M:%S').time()
 
+        # saving data into Listing model
+        listing_created = Listing(
+            item_name = listing_item_name,
+            item_description = listing_item_description,
+            item_start_price = listing_item_start_price,
+            item_image_url = listing_item_image_url,
+            item_category = listing_item_category,
+            item_username = listing_item_username,
+            #item_datetime = listing_item_datetime,
+            )
 
+        listing_created.save()
+        print(f'Saved new listing into Listing: {listing_created}')
+
+    # return to index page after submit form
+    return HttpResponseRedirect(reverse("index"))
