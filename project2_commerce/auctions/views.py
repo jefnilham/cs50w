@@ -27,10 +27,13 @@ class CreateListingForm(forms.Form):
     listing_item_start_price = forms.DecimalField(label="Listing item start price", max_digits=10, decimal_places=2, widget=forms.TextInput(attrs={'class':'form-control'}))
     listing_item_image_url = forms.URLField(label="Listing item image URL", max_length=200, widget=forms.TextInput(attrs={'class':'form-control'}))
     listing_item_category = forms.CharField(label="Listing item category", widget=forms.Select(choices=listing_item_category_list, attrs={'class':'form-control'}))
-    
 
+#might need helper function on top first to avoid unboundlocalerror
 def index(request):
-    return render(request, "auctions/index.html")
+    #listing_created_to_display = listing_created()
+    return render(request, "auctions/index.html", {
+        #"listing": listing_created_to_display
+    })
 
 def login_view(request):
     if request.method == "POST":
