@@ -18,5 +18,5 @@ class Listing(models.Model):
     item_username = models.CharField(max_length=64)
 
     # get datetime of post
-    item_datetime = models.CharField(max_length=64)
+    item_datetime = models.DateTimeField(max_length=64)
 

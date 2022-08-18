@@ -9,15 +9,13 @@ from .models import User, Listing
 from django import forms
 import datetime
 
-
-
 # category choices for CreateListingForm
 listing_item_category_list = [
     ('fashion', 'Fashion'),
     ('toys', 'Toys'),
     ('electronics', 'Electronics'),
     ('home', 'Home'),
-    ('nil', 'NIL')
+    ('no category', 'No Category')
     ]
 
 # form to take inputs at create_listing page 
@@ -27,6 +25,7 @@ class CreateListingForm(forms.Form):
     listing_item_start_price = forms.DecimalField(label="Listing item start price", max_digits=10, decimal_places=2, widget=forms.TextInput(attrs={'class':'form-control'}))
     listing_item_image_url = forms.URLField(label="Listing item image URL", max_length=200, widget=forms.TextInput(attrs={'class':'form-control'}))
     listing_item_category = forms.CharField(label="Listing item category", widget=forms.Select(choices=listing_item_category_list, attrs={'class':'form-control'}))
+
 
 #might need helper function on top first to avoid unboundlocalerror
 def index(request):
@@ -98,6 +97,9 @@ def create_listing(request):
     # take user input to backend once form submit i.e. POST /create_listing HTTP/1.1
     if request.method == "POST":
         form = CreateListingForm(request.POST)
+
+        # get datetime of listing created
+        listing_item_datetime = datetime.datetime.now()
         
         if form.is_valid():
 
@@ -120,7 +122,7 @@ def create_listing(request):
             item_image_url = listing_item_image_url,
             item_category = listing_item_category,
             item_username = listing_item_username,
-            #item_datetime = listing_item_datetime,
+            item_datetime = listing_item_datetime,
             )
 
         listing_created.save()
