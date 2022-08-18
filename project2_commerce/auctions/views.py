@@ -128,3 +128,11 @@ def create_listing(request):
 
     # return to index page after submit form
     return HttpResponseRedirect(reverse("index"))
+
+
+# listing_page
+def listing_page(request, item_name):
+    return render(request, "auctions/listing_page.html", {
+    "listings": Listing.objects.all(),
+    })
+

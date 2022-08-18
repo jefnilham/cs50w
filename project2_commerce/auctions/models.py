@@ -19,4 +19,3 @@ class Listing(models.Model):
 
     # get datetime of post
     item_datetime = models.DateTimeField(max_length=64)
-

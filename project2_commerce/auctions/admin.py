@@ -10,5 +10,4 @@ admin.site.register(Listing)
 
 
 
-
 # jefnilham, masterchief
