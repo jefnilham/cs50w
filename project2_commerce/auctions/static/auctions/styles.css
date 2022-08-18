@@ -1,3 +1,5 @@
 body {
     padding: 10px;
 }
+
+/* Use a more specific selector so you don't target all cols and cards. */

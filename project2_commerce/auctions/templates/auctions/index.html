@@ -7,7 +7,27 @@
     <i>Here are the listings available for bidding.</i>
     <br><br>
 
-    {{ listing.item_name }}
 
-    TODO
+    {% for listing in listings %}
+
+    <div class="container-fluid content-row">
+        <div class="row justify-content-center">
+            <div class="col-sm-12 col-lg-6">
+                <div class="card text-center">
+                    <img class="card-img-top" src={{listing.item_image_url}} alt="Card image cap">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ listing.item_name }}</h4>
+                        <h5 class="card-title">${{listing.item_start_price}}</h5>
+                        <!--<p class="card-text">{{ listing.item_category }}</p>-->
+                        <p class="card-text">{{ listing.item_description }}</p>
+                        <a href="#" class="btn btn-primary">Bid For Item!</a>
+                        <p class="card-text"><small class="text-muted"><br>Posted by: {{ listing.item_username }} on {{ listing.item_datetime }}</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    {% endfor %}
+
 {% endblock %}
