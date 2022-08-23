@@ -10,6 +10,7 @@
 
     {% for listing in listings %}
 
+
     <div class="container-fluid content-row">
         <div class="row justify-content-center">
             <div class="col-sm-12 col-lg-6">
@@ -20,7 +21,7 @@
                             <h4 class="card-header">{{ listing.item_name }}</h4><br>
                             <h5 class="card-title">${{listing.item_start_price}}</h5>
                             <p class="card-text">{{ listing.item_description }}</p>
-                            <a href="#" class="btn btn-primary">Bid For {{ listing.item_name }}</a>
+                            <a href="{% url 'listing_page' listing.item_name %}" class="btn btn-primary">Bid For {{ listing.item_name }}</a>
                             <p class="card-text"><small class="text-muted"><br>Posted by: {{ listing.item_username }} on {{ listing.item_datetime }}</small></p>
                         </div>
                     </div>

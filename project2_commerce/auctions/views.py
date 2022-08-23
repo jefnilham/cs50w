@@ -1,5 +1,7 @@
+from cgitb import text
 from secrets import choice
 from turtle import textinput
+from typing import List
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -125,14 +127,17 @@ def create_listing(request):
             )
 
         listing_created.save()
-
+        print("-------------------------------------------------->",listing_created.id)
     # return to index page after submit form
     return HttpResponseRedirect(reverse("index"))
 
 
 # listing_page
 def listing_page(request, item_name):
+    clicked_listing_id = Listing.objects.get(item_name=item_name).id
+    clicked_listing_data = Listing.objects.filter(id=clicked_listing_id).values()
+    print("DATA:XXXXXXXXXXXXXXXXXXXXXXXXXXXX", clicked_listing_data)
     return render(request, "auctions/listing_page.html", {
-    "listings": Listing.objects.all(),
+        "listings": clicked_listing_data,
     })
 
