@@ -12,6 +12,12 @@ from django import forms
 import datetime
 from django.core.files.storage import default_storage
 
+
+
+
+
+
+
 # category choices for CreateListingForm
 listing_item_category_list = [
     ('fashion', 'Fashion'),
@@ -28,6 +34,12 @@ class CreateListingForm(forms.Form):
     listing_item_start_price = forms.DecimalField(label="Listing item start price", max_digits=10, decimal_places=2, widget=forms.TextInput(attrs={'class':'form-control'}))
     listing_item_image_url = forms.URLField(label="Listing item image URL", max_length=200, widget=forms.TextInput(attrs={'class':'form-control'}))
     listing_item_category = forms.CharField(label="Listing item category", widget=forms.Select(choices=listing_item_category_list, attrs={'class':'form-control'}))
+
+# form to create comment. still add on to main Listing model
+class CreateComment(forms.Form):
+    comment_body = forms.CharField(label="Add a comment", widget=forms.Textarea(attrs={'class':'form-control', 'rows':'3'}))
+
+
 
 
 def index(request):
@@ -134,10 +146,28 @@ def create_listing(request):
 
 # listing_page
 def listing_page(request, item_name):
+
+    # get id of item_name from db matching clicked from index page
     clicked_listing_id = Listing.objects.get(item_name=item_name).id
     clicked_listing_data = Listing.objects.filter(id=clicked_listing_id).values()
-    print("DATA:XXXXXXXXXXXXXXXXXXXXXXXXXXXX", clicked_listing_data)
+
+    # redirect to same page when add comment
+    if request.method == "POST":
+        form = CreateComment(request.POST)
+        comment_datetime = datetime.datetime.now()
+        if form.is_valid():
+            comment_body = form.cleaned_data['comment_body']
+
+        comment_created = Comment(
+            comment_body = comment_body,
+            comment_datetime = comment_datetime,
+            comment_username = comment_username,
+        )
+
+        comment_created.save()
+        print("Comment Creasted:", comment_created.id)
+
     return render(request, "auctions/listing_page.html", {
         "listings": clicked_listing_data,
+        "form": CreateComment(),
     })
-
