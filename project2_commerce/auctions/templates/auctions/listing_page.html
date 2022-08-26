@@ -29,6 +29,8 @@
                             <p class="card-text">No posts yet!</p>
                             {% endfor %}
 
+
+                            <!-- to match ID to only show comments made on taht page-->
                             
                             {% for comment in comments %} 
                             {% if listing.id == comment.comment_listing.id %}
