@@ -7,13 +7,10 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import User, Listing
+from .models import User, Listing, Comment
 from django import forms
 import datetime
 from django.core.files.storage import default_storage
-
-
-
 
 
 
@@ -151,10 +148,15 @@ def listing_page(request, item_name):
     clicked_listing_id = Listing.objects.get(item_name=item_name).id
     clicked_listing_data = Listing.objects.filter(id=clicked_listing_id).values()
 
+
+    # get comments model data to display
+    comments = Comment.objects.all()
+
     # redirect to same page when add comment
     if request.method == "POST":
         form = CreateComment(request.POST)
         comment_datetime = datetime.datetime.now()
+        comment_username = request.user.username
         if form.is_valid():
             comment_body = form.cleaned_data['comment_body']
 
@@ -162,12 +164,16 @@ def listing_page(request, item_name):
             comment_body = comment_body,
             comment_datetime = comment_datetime,
             comment_username = comment_username,
+            comment_listing =  Listing.objects.get(item_name=item_name),
         )
 
         comment_created.save()
-        print("Comment Creasted:", comment_created.id)
+        print("Comment Created on", comment_created.comment_listing.id)
+
+
 
     return render(request, "auctions/listing_page.html", {
         "listings": clicked_listing_data,
         "form": CreateComment(),
+        "comments": comments
     })

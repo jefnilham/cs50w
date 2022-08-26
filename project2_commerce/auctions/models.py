@@ -20,3 +20,13 @@ class Listing(models.Model):
     # get datetime of post
     item_datetime = models.DateTimeField(max_length=64)
 
+
+
+# to log comments
+class Comment(models.Model):
+    comment_body = models.CharField(max_length=6400)
+    comment_datetime = models.DateTimeField(max_length=64)
+    comment_username = models.CharField(max_length=64)
+    
+    # link to Listing
+    comment_listing = models.ForeignKey(Listing, on_delete=models.CASCADE, null=True)

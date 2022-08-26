@@ -4,12 +4,10 @@
 
 {% for listing in listings %}
 
-    <h2>Viewing {{ listing.item_name }}</h2>
-
     <div class="container-fluid content-row">
         <div class="row justify-content-center">
             <div class="col-sm-12 col-lg-6">
-                <div class="card border-dark mb-3">
+                <div class="card-deck">
                     <div class="card text-center">
                         <img class="card-img-top" src={{listing.item_image_url}} alt="Card image cap">
                         <h2 class="card-header">{{ listing.item_name }}</h2>
@@ -18,22 +16,47 @@
                             <p class="card-text">{{ listing.item_description }}</p>
                             <a href="{% url 'listing_page' listing.item_name %}" class="btn btn-primary">Bid For {{ listing.item_name }}</a>
                             <p class="card-text"><small class="text-muted"><br>Posted by: {{ listing.item_username }} on {{ listing.item_datetime }}</small></p>
+                            
+                    </div>
                         </div>
+                    </div>
+                    </div>
+                    <div class="card border-light mb-3" style="max-width: 18rem;">
+                        <div class="card-header">Comments</div>
+                        <div class="card-body text-primary">
+                            {% for comment in comments %} 
+                            {% empty %}
+                            <p class="card-text">No posts yet!</p>
+                            {% endfor %}
+
+                            
+                            {% for comment in comments %} 
+                            {% if listing.id == comment.comment_listing.id %}
+                                <p class="card-text">{{comment.comment_body}}</p>
+                                <p class="card-text"><small class="text-muted"><br>Comment by {{ comment.comment_username }} on {{ comment.comment_datetime }}</small></p>
+                            {% endif %}    
+
+                            {% endfor %}
+                            
+                      </div>
+                    <br>
+                    <br>
+                    </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <br>
-    {% endfor %}
-
-
-    <form method="post" >
+    <form action="{% url 'listing_page' listing.item_name %}" method="post">
         {% csrf_token %}
-        <div class="form-group">
-            {{ form }}
-        </div>
-        <button class="button" type="submit">Add Comment</button>
-    </form>
-
+    <div class="form-group">
+        {{ form }}
+    </div>
+    <input class="btn btn-primary" type="submit" value="Add Comment">
+</form>
+  
+</div>
+</div>
+    {% endfor %}
 {% endblock %}
