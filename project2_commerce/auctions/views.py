@@ -182,8 +182,9 @@ def listing_page(request, item_name):
 
 def category_page(request):
 
-    listings = Listing.objects.all()
+    listings = Listing.objects.all().values('item_category').distinct()
 
+    print(listings)
     # display list of categories if nothing
     return render(request, "auctions/category_page.html", {
         "listings": listings,
