@@ -160,6 +160,7 @@ def listing_page(request, item_name):
         if form.is_valid():
             comment_body = form.cleaned_data['comment_body']
 
+        # add comment data to model
         comment_created = Comment(
             comment_body = comment_body,
             comment_datetime = comment_datetime,
@@ -167,9 +168,8 @@ def listing_page(request, item_name):
             comment_listing =  Listing.objects.get(item_name=item_name),
         )
 
+        # save comments
         comment_created.save()
-        print("Comment Created on", comment_created.comment_listing.id)
-
 
 
     return render(request, "auctions/listing_page.html", {
@@ -177,3 +177,17 @@ def listing_page(request, item_name):
         "form": CreateComment(),
         "comments": comments
     })
+
+
+
+def category_page(request):
+
+    listings = Listing.objects.all()
+
+    # display list of categories if nothing
+    return render(request, "auctions/category_page.html", {
+        "listings": listings,
+    })
+
+
+    # show listing of clicked category
