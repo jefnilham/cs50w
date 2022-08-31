@@ -149,7 +149,6 @@ def listing_page(request, item_name):
     clicked_listing_id = Listing.objects.get(item_name=item_name).id
     clicked_listing_data = Listing.objects.filter(id=clicked_listing_id).values()
 
-
     # get comments model data to display
     comments = Comment.objects.all()
 
@@ -198,11 +197,39 @@ def category_page(request):
 # page after a category is clicked from category_page
 def category_page_clicked(request, item_category):
 
+    print("OIIIIIIIIIIIIIIIIIIIII", item_category)
+
     # filter to item_category clicked
     clicked_listing_data = Listing.objects.filter(item_category=item_category).values()
-
-    print(clicked_listing_data)
 
     return render(request, "auctions/category_page_clicked.html", {
         "listings": clicked_listing_data,
     })
+
+
+
+# watchlist page. users come from clicking watchlist button on listing_page
+def watchlist_page(request, item_name):
+
+    # get id of clicked item from item_name e.g "home"
+    clicked_listing_id = Listing.objects.get(item_name=item_name).id    
+
+    # create list for watched items, each elem is an item_name from Listing
+    watchlist_list = []
+    watchlist_list.append(item_name)
+
+    # remove duplicates
+    watchlist_list = list(dict.fromkeys(watchlist_list))
+    print(watchlist_list)
+
+    # get unique item category to display on category page
+    clicked_listing_id = Listing.objects.get(item_name=item_name).id    
+    clicked_listing_data = Listing.objects.filter(id=clicked_listing_id).values()
+
+
+    # display list of categories if nothing
+    return render(request, "auctions/watchlist_page.html", {
+        "listings": clicked_listing_data,
+    })
+
+
