@@ -1,0 +1,29 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+{% for listing in listings %}
+
+<h2>Listings found in category <i>"{{ listing.item_category }}" </i></h2><br>
+
+<div class="container-fluid content-row">
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-lg-6">
+            <div class="card-deck">
+                <div class="card text-center">
+                    <img class="card-img-top" src={{listing.item_image_url}} alt="Card image cap">
+                    <h2 class="card-header">{{ listing.item_name }}</h2>
+                    <div class="card-body">
+                        <h3 class="card-title">${{listing.item_start_price}}</h3>
+                        <p class="card-text">{{ listing.item_description }}</p>
+                        <a href="{% url 'listing_page' listing.item_name %}" class="btn btn-primary">Bid For {{ listing.item_name }}</a>
+                        <p class="card-text"><small class="text-muted"><br>Posted by: {{ listing.item_username }} on {{ listing.item_datetime }}</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+{% endfor %}
+{% endblock %}

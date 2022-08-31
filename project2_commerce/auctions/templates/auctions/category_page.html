@@ -2,11 +2,12 @@
 
 {% block body %}
 
+<h2>Choose a category</h2>
 
 <ul>
     {% for listing in listings %}
         <li>
-            <a href="#">{{listing.item_category}}</a>
+            <a href="{% url 'category_page_clicked' listing.item_category %}">{{ listing.item_category }}</a>
         </li>
     {% endfor %}
 </ul>

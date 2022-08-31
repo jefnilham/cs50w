@@ -1,5 +1,6 @@
 from cgitb import text
 from secrets import choice
+from tkinter import FLAT
 from turtle import textinput
 from typing import List
 from django.contrib.auth import authenticate, login, logout
@@ -180,15 +181,28 @@ def listing_page(request, item_name):
 
 
 
+# page to only show all listings categories
 def category_page(request):
 
+    # get unique item category to display on category page
     listings = Listing.objects.all().values('item_category').distinct()
 
-    print(listings)
     # display list of categories if nothing
     return render(request, "auctions/category_page.html", {
         "listings": listings,
     })
 
 
-    # show listing of clicked category
+
+
+# page after a category is clicked from category_page
+def category_page_clicked(request, item_category):
+
+    # filter to item_category clicked
+    clicked_listing_data = Listing.objects.filter(item_category=item_category).values()
+
+    print(clicked_listing_data)
+
+    return render(request, "auctions/category_page_clicked.html", {
+        "listings": clicked_listing_data,
+    })
