@@ -14,12 +14,12 @@ class Biddings(models.Model):
     listings = models.ForeignKey(Listings, on_delete=models.CASCADE)
     bid_amount = models.IntegerField(max_length=200)
     item_has_bid = models.BooleanField()
-    def __str__(self): 
-        return self.bid_amount
+    #def __str__(self): 
+        #return self.bid_amount
     
 class Comments(models.Model):
     listings = models.ForeignKey(Listings, on_delete=models.CASCADE)
     comment_text = models.CharField(max_length=200)
     item_has_comment = models.BooleanField()
-    def __str__(self):
-        return self.comment_text
+    #def __str__(self):
+        #return self.comment_text
