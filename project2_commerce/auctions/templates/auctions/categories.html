@@ -1,0 +1,9 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Categories Available</h2>
+        {% for listings in all_listings %}
+            <a href="{% url 'clicked_categories' listings.listing_category %}">{{ listings.listing_category }}</a>
+            <br></br>
+        {% endfor %}
+{% endblock %}
