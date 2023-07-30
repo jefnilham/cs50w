@@ -97,5 +97,12 @@ def add_to_watchlist(request, id):
         user = User.objects.get(username=request.user.username)
         user.listing_items_added_to_watchlist.add(item)
         watchlisted_items = user.listing_items_added_to_watchlist.all()
-    #return HttpResponseRedirect('watchlist', id=id)
+    return render(request, "auctions/watchlist.html", {"watchlisted_items":watchlisted_items})
+
+def remove_from_watchlist(request, id):
+    if request.method == 'POST':
+        item = Listing.objects.get(pk=id)
+        user = User.objects.get(username=request.user.username)
+        user.listing_items_added_to_watchlist.remove(item)
+        watchlisted_items = user.listing_items_added_to_watchlist.all()
     return render(request, "auctions/watchlist.html", {"watchlisted_items":watchlisted_items})

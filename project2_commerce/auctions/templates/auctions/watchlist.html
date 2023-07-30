@@ -2,14 +2,17 @@
 
 {% block body %}
     <h2>My Watchlist</h2>
-        <h3>{{watchlisted_items.listing_name}}</h3>
+        
             {% for items in watchlisted_items %}
-                <a href="{% url 'clicked_listing' items.id %}">{{ items.listing_name }}</a>
+                <h3>{{items.listing_name}}</h3>
                 <ul>{{items.listing_description}}</ul>
                 <ul>{{items.listing_price}}</ul>
                 <ul>{{items.listing_category}}</ul>
                 <ul><img src={{items.listing_image_url}}></ul>
-                <br></br>
+                <form method="post" action="{% url 'remove_from_watchlist' id=items.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Remove from Watchlist</button>
+                </form>
             {% endfor %}
 
 {% endblock %}
