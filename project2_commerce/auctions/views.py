@@ -73,11 +73,13 @@ def create(request):
             listing_name = form.cleaned_data["listing_name"]
             listing_description = form.cleaned_data["listing_description"]
             listing_price = form.cleaned_data["listing_price"]
-            listing_category = form.cleaned_data["listing_category"]                    
+            listing_category = form.cleaned_data["listing_category"]    
+            listing_image_url = form.cleaned_data["listing_image_url"]   
             listing_created = Listing(listing_name=listing_name,
                                       listing_description=listing_description,
                                       listing_price=listing_price,
-                                      listing_category=listing_category)
+                                      listing_category=listing_category,
+                                      listing_image_url=listing_image_url)
             listing_created.save()
         return HttpResponseRedirect(reverse("index"))
     else:

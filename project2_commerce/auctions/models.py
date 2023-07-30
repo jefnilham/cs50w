@@ -10,6 +10,7 @@ class Listing(models.Model):
     listing_description = models.CharField(max_length=1000)
     listing_price = models.IntegerField()
     listing_category = models.CharField(max_length=200)
+    listing_image_url = models.URLField()
     def __str__(self):
         return self.listing_name
 

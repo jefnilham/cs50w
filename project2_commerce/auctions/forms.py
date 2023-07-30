@@ -5,3 +5,4 @@ class CreateNewListing(forms.Form):
     listing_description = forms.CharField(label="Listing Description", max_length=1000)
     listing_price = forms.IntegerField(label="Price")
     listing_category = forms.CharField(label="Category", max_length=200)
+    listing_image_url = forms.URLField(label="Image URL")
