@@ -2,6 +2,12 @@
 
 {% block body %}
     <h2>Active Listings</h2>
-    <h3>{{listing_name}}</h3>
-    TODO
+        <h3>{{all_listings.listing_name}}</h3>
+                {% for listings in all_listings %}
+                    <h4>{{listings.listing_name}}</h4>
+                    <ul>{{listings.listing_description}}</ul>
+                    <ul>{{listings.listing_price}}</ul>
+                    <ul>{{listings.listing_category}}</ul>
+                {% endfor %}
 {% endblock %}
+

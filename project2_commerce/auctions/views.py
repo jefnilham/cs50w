@@ -8,9 +8,9 @@ from .forms import CreateNewListing
 from .models import User, Listing, Bidding, Comment, Watchlist
 
 
-def index(request, id):
-    created_listing = Listing.objects.get(id=id)
-    return render(request, "auctions/index.html", {"listing_name":created_listing})
+def index(request):
+    all_listings = Listing.objects.all()
+    return render(request, "auctions/index.html", {"all_listings":all_listings})
 
 
 def login_view(request):
