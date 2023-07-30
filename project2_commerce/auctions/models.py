@@ -3,6 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
+    listing_items_added_to_watchlist = models.ManyToManyField('Listing', related_name='watchlist_users')
     pass
 
 class Listing(models.Model):
@@ -11,6 +12,7 @@ class Listing(models.Model):
     listing_price = models.IntegerField()
     listing_category = models.CharField(max_length=200)
     listing_image_url = models.URLField()
+    
     def __str__(self):
         return self.listing_name
 
@@ -26,5 +28,3 @@ class Comment(models.Model):
     def __str__(self):
         return self.new_comment_text
     
-class Watchlist(models.Model):
-    watchlist_listings = models.ForeignKey(Listing, on_delete=models.CASCADE)

@@ -1,17 +1,15 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .forms import CreateNewListing
 
-from .models import User, Listing, Bidding, Comment, Watchlist
+from .models import User, Listing, Bidding, Comment
 
 
 def index(request):
     all_listings = Listing.objects.all()
-    #clickable_listings = Listing.objects.get(id=id)
-
     return render(request, "auctions/index.html", {"all_listings":all_listings})
 
 
@@ -87,3 +85,16 @@ def categories(request):
 def clicked_categories(request, listing_category):
     listing_category = Listing.objects.filter(listing_category=listing_category)
     return render(request, "auctions/clicked_categories.html", {"listing_category":listing_category})
+
+def watchlist(request):
+    user = User.objects.get(username=request.user.username)
+    watchlisted_items = user.listing_items_added_to_watchlist.all()
+    return render(request, "auctions/watchlist.html", {"watchlisted_items":watchlisted_items})
+
+
+
+def add_to_watchlist(request, id):
+    user = User.objects.get(username='username')
+    watchlisted_item = Listing.objects.get(pk=id)
+    request.user.listing_items_added_to_watchlist.add(watchlisted_item)
+    return render(request, "auctions/watchlist.html", {"watchlisted_item":watchlisted_item})
