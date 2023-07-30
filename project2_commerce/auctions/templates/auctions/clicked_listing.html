@@ -9,7 +9,7 @@
             <ul>{{clicked_listing.listing_category}}</ul>
             <ul><img src={{clicked_listing.listing_image_url}}></ul>
 
-            <form method="post" action="{% url 'watchlist' %}">
+            <form method="post" action="{% url 'add_to_watchlist' id=clicked_listing.id %}">
                 {% csrf_token %}
                 <button type="submit">Add to Watchlist</button>
             </form>

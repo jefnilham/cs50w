@@ -91,10 +91,11 @@ def watchlist(request):
     watchlisted_items = user.listing_items_added_to_watchlist.all()
     return render(request, "auctions/watchlist.html", {"watchlisted_items":watchlisted_items})
 
-
-
 def add_to_watchlist(request, id):
-    user = User.objects.get(username='username')
-    watchlisted_item = Listing.objects.get(pk=id)
-    request.user.listing_items_added_to_watchlist.add(watchlisted_item)
-    return render(request, "auctions/watchlist.html", {"watchlisted_item":watchlisted_item})
+    if request.method == 'POST':
+        item = Listing.objects.get(pk=id)
+        user = User.objects.get(username=request.user.username)
+        user.listing_items_added_to_watchlist.add(item)
+        watchlisted_items = user.listing_items_added_to_watchlist.all()
+    #return HttpResponseRedirect('watchlist', id=id)
+    return render(request, "auctions/watchlist.html", {"watchlisted_items":watchlisted_items})
