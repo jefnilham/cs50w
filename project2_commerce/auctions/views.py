@@ -10,6 +10,8 @@ from .models import User, Listing, Bidding, Comment, Watchlist
 
 def index(request):
     all_listings = Listing.objects.all()
+    #clickable_listings = Listing.objects.get(id=id)
+
     return render(request, "auctions/index.html", {"all_listings":all_listings})
 
 
@@ -77,7 +79,7 @@ def create(request):
                                       listing_price=listing_price,
                                       listing_category=listing_category)
             listing_created.save()
-            return HttpResponseRedirect("/%i" %listing_created.id)
+        return HttpResponseRedirect(reverse("index"))
     else:
         form = CreateNewListing()
     return render(request, "auctions/create.html", {"form":form})
