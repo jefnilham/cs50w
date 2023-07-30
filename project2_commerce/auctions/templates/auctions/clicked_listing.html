@@ -1,0 +1,12 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>View Selected Listing</h2>
+        <h3>{{clicked_listing.listing_name}}</h3>
+            <ul>{{clicked_listing.listing_name}}</ul>
+            <ul>{{clicked_listing.listing_description}}</ul>
+            <ul>{{clicked_listing.listing_price}}</ul>
+            <ul>{{clicked_listing.listing_category}}</ul>
+
+
+{% endblock %}

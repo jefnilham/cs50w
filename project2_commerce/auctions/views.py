@@ -81,3 +81,7 @@ def create(request):
     else:
         form = CreateNewListing()
     return render(request, "auctions/create.html", {"form":form})
+
+def clicked_listing(request, id):
+    clicked_listing = Listing.objects.get(id=id)
+    return render(request, "auctions/clicked_listing.html", {"clicked_listing":clicked_listing})
