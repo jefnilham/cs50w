@@ -3,6 +3,10 @@
 {% block body %}
     <h2>Items by Selected Category</h2>
         {% for listings in listing_category %}
-            <ul>{{ listings.listing_category }}</ul>
+            <a href="{% url 'clicked_listing' listings.id %}">{{ listings.listing_name }}</a>
+            <ul>{{listings.listing_description}}</ul>
+            <ul>{{listings.listing_price}}</ul>
+            <ul>{{listings.listing_category}}</ul>
+            <ul><img src={{listings.listing_image_url}}></ul>
         {% endfor %}
 {% endblock %}
