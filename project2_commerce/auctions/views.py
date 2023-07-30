@@ -81,9 +81,9 @@ def clicked_listing(request, id):
     return render(request, "auctions/clicked_listing.html", {"clicked_listing":clicked_listing})
 
 def categories(request):
-    all_listings = Listing.objects.all()
-    return render(request, "auctions/categories.html", {"all_listings":all_listings})
+    all_categories = Listing.objects.values('listing_category').distinct()
+    return render(request, "auctions/categories.html", {"all_categories":all_categories})
 
 def clicked_categories(request, listing_category):
     listing_category = Listing.objects.filter(listing_category=listing_category)
-    return render(request, "clicked_categories", {"listing_category":listing_category})
+    return render(request, "auctions/clicked_categories.html", {"listing_category":listing_category})
