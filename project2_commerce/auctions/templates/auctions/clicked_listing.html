@@ -19,7 +19,7 @@
 
         {% for comment in comments %}
         <div>
-            <p>{{ comment.user }} - {{ comment.created_at }}</p>
+            <p>{{ comment.user.username }} - {{ comment.created_at }}</p>
             <p>{{ comment.new_comment_text }}</p>
         </div>
         {% endfor %}

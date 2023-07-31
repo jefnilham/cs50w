@@ -24,8 +24,8 @@ class Bidding(models.Model):
         return self.bid_amount
     
 class Comment(models.Model):
-    #user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    #listings = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    listings = models.ForeignKey(Listing,null=True, on_delete=models.CASCADE)
     new_comment_text = models.TextField(max_length=1000)
     created_at = models.DateTimeField(default=datetime.now)
     

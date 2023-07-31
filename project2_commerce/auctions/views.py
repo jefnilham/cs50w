@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from .forms import CreateNewListing, CreateNewComment
 from .models import User, Listing, Bidding, Comment
+from django.utils import timezone
 
 
 def index(request):
@@ -77,21 +78,25 @@ def create(request):
 
 def clicked_listing(request, id):
     clicked_listing = Listing.objects.get(id=id)
-    user = User.objects.get(username=request.user.username)
+    #listing = get_object_or_404(Listing, id=id)
     if request.method == "POST":
         comment_form = CreateNewComment(request.POST)
         if comment_form.is_valid():
-            new_comment.user = user
-            new_comment = comment_form.save()
-            
+            new_comment = comment_form.save(commit=False)
+            new_comment.user = request.user  # Assign the current user to the comment
+            new_comment.clicked_listing = clicked_listing
+            new_comment.created_at = timezone.now()
             new_comment.save()
+            comment_form = CreateNewComment()
             return HttpResponseRedirect(reverse("clicked_listing", id=id))
     else:
         comment_form = CreateNewComment()
         comments = Comment.objects.all()
     return render(request, "auctions/clicked_listing.html", {"comment_form":comment_form,
                                                              "comments":comments,
-                                                             "clicked_listing":clicked_listing})
+                                                             "clicked_listing":clicked_listing,
+                                                             "clicked_listing":clicked_listing
+                                                             })
 
 def categories(request):
     all_categories = Listing.objects.values('listing_category').distinct()
