@@ -77,14 +77,17 @@ def create(request):
 
 
 def clicked_listing(request, id):
-    clicked_listing = Listing.objects.get(id=id)
+    clicked_listing = Listing.objects.get(pk=id)
+    print(clicked_listing)
+    comments = Comment.objects.filter(listings=clicked_listing)
+    print(comments)
     #listing = get_object_or_404(Listing, id=id)
     if request.method == "POST":
         comment_form = CreateNewComment(request.POST)
         if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
             new_comment.user = request.user  # Assign the current user to the comment
-            new_comment.clicked_listing = clicked_listing
+            new_comment.listings = clicked_listing
             new_comment.created_at = timezone.now()
             new_comment.save()
             comment_form = CreateNewComment()
@@ -94,7 +97,6 @@ def clicked_listing(request, id):
         comments = Comment.objects.all()
     return render(request, "auctions/clicked_listing.html", {"comment_form":comment_form,
                                                              "comments":comments,
-                                                             "clicked_listing":clicked_listing,
                                                              "clicked_listing":clicked_listing
                                                              })
 

@@ -19,8 +19,10 @@
 
         {% for comment in comments %}
         <div>
+            {% if comment.listings == clicked_listing %}
             <p>{{ comment.user.username }} - {{ comment.created_at }}</p>
             <p>{{ comment.new_comment_text }}</p>
+            {% endif %}
         </div>
         {% endfor %}
         
