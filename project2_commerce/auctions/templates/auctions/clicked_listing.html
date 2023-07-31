@@ -1,6 +1,7 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+
     <h2>Selected Listing</h2>
         <h3>{{clicked_listing.listing_name}}</h3>
             <ul>{{clicked_listing.listing_name}}</ul>
@@ -8,10 +9,28 @@
             <ul>{{clicked_listing.listing_price}}</ul>
             <ul>{{clicked_listing.listing_category}}</ul>
             <ul><img src={{clicked_listing.listing_image_url}}></ul>
+            <br></br>
 
-            <form method="post" action="{% url 'add_to_watchlist' id=clicked_listing.id %}">
-                {% csrf_token %}
-                <button type="submit">Add to Watchlist</button>
-            </form>
+        <form method="post" action="{% url 'add_to_watchlist' clicked_listing.id %}">
+            {% csrf_token %}
+            <button type="submit">Add to Watchlist</button>
+        </form>
+        <br></br>
+
+        {% for comment in comments %}
+        <div>
+            <p>{{ comment.user }} - {{ comment.created_at }}</p>
+            <p>{{ comment.new_comment_text }}</p>
+        </div>
+        {% endfor %}
+        
+        <form method = "post" action="">
+            {% csrf_token %}
+            {{comment_form.as_p}}
+            <button type="submit", name="save">
+                Create New Comment
+            </button>
+        </form>
+
 
 {% endblock %}

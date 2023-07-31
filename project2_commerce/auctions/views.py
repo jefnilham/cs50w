@@ -1,10 +1,9 @@
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
-from .forms import CreateNewListing
-
+from .forms import CreateNewListing, CreateNewComment
 from .models import User, Listing, Bidding, Comment
 
 
@@ -64,6 +63,7 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+
 def create(request):
     if request.method == 'POST':
         form = CreateNewListing(request.POST)
@@ -74,22 +74,40 @@ def create(request):
         form = CreateNewListing()
     return render(request, "auctions/create.html", {"form":form})
 
+
 def clicked_listing(request, id):
     clicked_listing = Listing.objects.get(id=id)
-    return render(request, "auctions/clicked_listing.html", {"clicked_listing":clicked_listing})
+    user = User.objects.get(username=request.user.username)
+    if request.method == "POST":
+        comment_form = CreateNewComment(request.POST)
+        if comment_form.is_valid():
+            new_comment.user = user
+            new_comment = comment_form.save()
+            
+            new_comment.save()
+            return HttpResponseRedirect(reverse("clicked_listing", id=id))
+    else:
+        comment_form = CreateNewComment()
+        comments = Comment.objects.all()
+    return render(request, "auctions/clicked_listing.html", {"comment_form":comment_form,
+                                                             "comments":comments,
+                                                             "clicked_listing":clicked_listing})
 
 def categories(request):
     all_categories = Listing.objects.values('listing_category').distinct()
     return render(request, "auctions/categories.html", {"all_categories":all_categories})
 
+
 def clicked_categories(request, listing_category):
     listing_category = Listing.objects.filter(listing_category=listing_category)
     return render(request, "auctions/clicked_categories.html", {"listing_category":listing_category})
+
 
 def watchlist(request):
     user = User.objects.get(username=request.user.username)
     watchlisted_items = user.listing_items_added_to_watchlist.all()
     return render(request, "auctions/watchlist.html", {"watchlisted_items":watchlisted_items})
+
 
 def add_to_watchlist(request, id):
     if request.method == 'POST':
@@ -99,6 +117,7 @@ def add_to_watchlist(request, id):
         watchlisted_items = user.listing_items_added_to_watchlist.all()
     return render(request, "auctions/watchlist.html", {"watchlisted_items":watchlisted_items})
 
+
 def remove_from_watchlist(request, id):
     if request.method == 'POST':
         item = Listing.objects.get(pk=id)
@@ -106,3 +125,21 @@ def remove_from_watchlist(request, id):
         user.listing_items_added_to_watchlist.remove(item)
         watchlisted_items = user.listing_items_added_to_watchlist.all()
     return render(request, "auctions/watchlist.html", {"watchlisted_items":watchlisted_items})
+
+'''
+def add_comment(request):
+    listing = get_object_or_404(Listing, id=id)
+    if request.method == "POST":
+        comment_form = CreateNewComment(request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save()
+            new_comment.listings = listing
+            new_comment.save()
+            return HttpResponseRedirect(reverse("clicked_listing", id=id))
+    else:
+        comment_form = CreateNewComment()
+        comments = Comment.objects.filter(listings=listing)
+    return render(request, "auctions/clicked_listing.html", {"comment_form":comment_form,
+                                                             "listing":listing,
+                                                             "comments":comments})
+'''
