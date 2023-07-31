@@ -1,5 +1,5 @@
 from django import forms
-from .models import Listing, Comment
+from .models import Listing, Comment, Bidding
 
 class CreateNewListing(forms.ModelForm):
     class Meta:
@@ -10,3 +10,9 @@ class CreateNewComment(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ["new_comment_text", "created_at"] 
+
+class CreateNewBid(forms.ModelForm):
+    class Meta:
+        model = Bidding
+        fields = ["new_bid"]
+

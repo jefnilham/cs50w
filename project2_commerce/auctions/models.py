@@ -5,7 +5,6 @@ from datetime import datetime
 
 class User(AbstractUser):
     listing_items_added_to_watchlist = models.ManyToManyField('Listing', related_name='watchlist_users')
-    #listing_items_created = models.ManyToManyField('Listing', related_name='listing_items_created')
     pass
 
 class Listing(models.Model):
@@ -15,15 +14,14 @@ class Listing(models.Model):
     listing_category = models.CharField(max_length=200)
     listing_image_url = models.URLField()
     listing_created_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    
     def __str__(self):
         return self.listing_name
 
 class Bidding(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    listings = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    #latest_bid = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    #new_bid = models.IntegerField()
+    listings_name = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    new_bid = models.IntegerField(null=True)
+    bid_created_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    #bid_replaced_price = models.BooleanField(default=False)
     def __unicode__(self): 
         return self.bid_amount
     

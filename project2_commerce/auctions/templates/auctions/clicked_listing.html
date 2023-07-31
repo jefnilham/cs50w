@@ -6,7 +6,12 @@
         <h3>{{clicked_listing.listing_name}}</h3>
             <ul>{{clicked_listing.listing_name}}</ul>
             <ul>{{clicked_listing.listing_description}}</ul>
-            <ul>{{clicked_listing.listing_price}}</ul>
+            <ul>{{clicked_listing.listing_price}} </ul>
+            <form method="post" action="{% url 'clicked_listing' clicked_listing.id %}">
+                {% csrf_token %}
+                {{bid_form.as_p}}
+                <button type="submit">Bid Higher</button>
+            </form>
             <ul>{{clicked_listing.listing_category}}</ul>
             <ul><img src={{clicked_listing.listing_image_url}}></ul>
             <br></br>

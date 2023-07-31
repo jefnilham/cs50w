@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
-from .forms import CreateNewListing, CreateNewComment
+from .forms import CreateNewListing, CreateNewComment, CreateNewBid
 from .models import User, Listing, Bidding, Comment
 from django.utils import timezone
 
@@ -81,6 +81,10 @@ def create(request):
 def clicked_listing(request, id):
     clicked_listing = Listing.objects.get(id=id)
     comments = Comment.objects.filter(listings=clicked_listing)
+    latest_bid = clicked_listing.bidding_set.order_by('-new_bid').first()
+    
+
+    # add comments
     if request.method == "POST":
         comment_form = CreateNewComment(request.POST)
         if comment_form.is_valid():
@@ -91,12 +95,32 @@ def clicked_listing(request, id):
             new_comment.save()
             comment_form = CreateNewComment()
             return HttpResponseRedirect(reverse("clicked_listing", args=[id]))
+        
+        # add bid
+        bid_form = CreateNewBid(request.POST)
+        if bid_form.is_valid():
+            new_bid = bid_form.cleaned_data['new_bid']
+            if latest_bid is None or new_bid > latest_bid.new_bid:
+                clicked_listing.listing_price = new_bid
+                clicked_listing.save()
+                new_bid_form = bid_form.save(commit=False)
+                new_bid_form.bid_created_by = request.user
+                new_bid_form.listings_name = clicked_listing
+                new_bid_form.save()
+                bid_form = CreateNewBid()
+                return HttpResponseRedirect(reverse("clicked_listing", args=[id]))
+            else:
+                return render(request, 'auctions/error.html', {'message': 'Your bid must be higher than the current bid.'})
+
     else:
+        bid_form = CreateNewBid()
         comment_form = CreateNewComment()
         comments = Comment.objects.all()
     return render(request, "auctions/clicked_listing.html", {"comment_form":comment_form,
                                                              "comments":comments,
-                                                             "clicked_listing":clicked_listing
+                                                             "clicked_listing":clicked_listing,
+                                                             "bid_form":bid_form,
+                                                             "latest_bid":latest_bid
                                                              })
 
 def categories(request):
