@@ -157,7 +157,9 @@ def remove_from_watchlist(request, id):
     return render(request, "auctions/watchlist.html", {"watchlisted_items":watchlisted_items})
 
 
-def my_listings(request):
+def closed_listings(request):
+    all_listings = Listing.objects.all()
     user = request.user
-    created_listings = Listing.objects.filter(listing_created_by=user)
-    return render(request, "auctions/my_listings.html", {"created_listings":created_listings})
+    print(user)
+    return render(request, "auctions/closed_listings.html", {"all_listings":all_listings, 
+                                                             "user":user})

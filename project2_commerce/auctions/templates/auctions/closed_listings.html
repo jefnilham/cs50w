@@ -1,0 +1,37 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Bids Won</h2>
+        <p>Congrats - You bid the highest!</p>
+        <h3>{{all_listings.listing_name}}</h3>
+                {% for listings in all_listings %}
+                    {% if not listings.listing_active %}
+                        {% if listings.listing_created_by == user %}
+                            <a href="{% url 'clicked_listing' listings.id %}">{{ listings.listing_name }}</a>
+                            <ul>{{listings.listing_description}}</ul>
+                            <ul>{{listings.listing_price}}</ul>
+                            <ul>{{listings.listing_category}}</ul>
+                            <ul><img src={{listings.listing_image_url}}></ul>
+                            <ul>{{listings.listing_created_by}}</ul>
+                            <br></br>
+                            {% endif %}
+                    {% endif %}
+                {% endfor %}
+    
+    <h2>Bids Closed</h2>
+        <p>List of all bids you created and closed to the highest bidder</p>
+            {% for listings in all_listings %}
+                {% if not listings.listing_active %}
+                    {% if listings.listing_created_by != user %}
+                        <a href="{% url 'clicked_listing' listings.id %}">{{ listings.listing_name }}</a>
+                        <ul>{{listings.listing_description}}</ul>
+                        <ul>{{listings.listing_price}}</ul>
+                        <ul>{{listings.listing_category}}</ul>
+                        <ul><img src={{listings.listing_image_url}}></ul>
+                        <ul>{{listings.listing_created_by}}</ul>
+                        <br></br>
+                        {% endif %}
+                {% endif %}
+            {% endfor %}
+{% endblock %}
+

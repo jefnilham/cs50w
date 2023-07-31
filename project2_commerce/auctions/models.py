@@ -14,6 +14,8 @@ class Listing(models.Model):
     listing_category = models.CharField(max_length=200)
     listing_image_url = models.URLField()
     listing_created_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    listing_bid_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name="winning_bidder")
+    listing_active = models.BooleanField(default=True)
     def __str__(self):
         return self.listing_name
 
@@ -21,9 +23,7 @@ class Bidding(models.Model):
     listings_name = models.ForeignKey(Listing, on_delete=models.CASCADE)
     new_bid = models.IntegerField(null=True)
     bid_created_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    #bid_replaced_price = models.BooleanField(default=False)
-    def __unicode__(self): 
-        return self.bid_amount
+
     
 class Comment(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
