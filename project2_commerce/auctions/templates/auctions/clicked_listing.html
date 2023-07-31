@@ -26,7 +26,7 @@
         </div>
         {% endfor %}
         
-        <form method = "post" action="">
+        <form method = "post" action="{% url 'clicked_listing' clicked_listing.id %}">
             {% csrf_token %}
             {{comment_form.as_p}}
             <button type="submit", name="save">

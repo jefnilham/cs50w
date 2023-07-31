@@ -77,11 +77,10 @@ def create(request):
 
 
 def clicked_listing(request, id):
-    clicked_listing = Listing.objects.get(pk=id)
+    clicked_listing = Listing.objects.get(id=id)
     print(clicked_listing)
     comments = Comment.objects.filter(listings=clicked_listing)
     print(comments)
-    #listing = get_object_or_404(Listing, id=id)
     if request.method == "POST":
         comment_form = CreateNewComment(request.POST)
         if comment_form.is_valid():
@@ -91,7 +90,7 @@ def clicked_listing(request, id):
             new_comment.created_at = timezone.now()
             new_comment.save()
             comment_form = CreateNewComment()
-            return HttpResponseRedirect(reverse("clicked_listing", id=id))
+            return HttpResponseRedirect(reverse("clicked_listing", args=[id]))
     else:
         comment_form = CreateNewComment()
         comments = Comment.objects.all()
