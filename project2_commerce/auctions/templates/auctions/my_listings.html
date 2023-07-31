@@ -1,18 +1,14 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Items Added to Watchlist</h2>
+    <h2>Listings Created</h2>
         
-            {% for items in watchlisted_items %}
+            {% for items in created_listings %}
                 <h3>{{items.listing_name}}</h3>
                 <ul>{{items.listing_description}}</ul>
                 <ul>{{items.listing_price}}</ul>
                 <ul>{{items.listing_category}}</ul>
                 <ul><img src={{items.listing_image_url}}></ul>
-                <form method="post" action="{% url 'remove_from_watchlist' id=items.id %}">
-                    {% csrf_token %}
-                    <button type="submit">Remove from Watchlist</button>
-                </form>
             {% endfor %}
 
 {% endblock %}

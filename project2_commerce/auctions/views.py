@@ -69,7 +69,9 @@ def create(request):
     if request.method == 'POST':
         form = CreateNewListing(request.POST)
         if form.is_valid():
-            form.save()
+            new_form = form.save(commit=False)
+            new_form.listing_created_by = request.user
+            new_form.save()
             return HttpResponseRedirect(reverse("index"))
     else:
         form = CreateNewListing()
@@ -78,9 +80,7 @@ def create(request):
 
 def clicked_listing(request, id):
     clicked_listing = Listing.objects.get(id=id)
-    print(clicked_listing)
     comments = Comment.objects.filter(listings=clicked_listing)
-    print(comments)
     if request.method == "POST":
         comment_form = CreateNewComment(request.POST)
         if comment_form.is_valid():
@@ -132,20 +132,8 @@ def remove_from_watchlist(request, id):
         watchlisted_items = user.listing_items_added_to_watchlist.all()
     return render(request, "auctions/watchlist.html", {"watchlisted_items":watchlisted_items})
 
-'''
-def add_comment(request):
-    listing = get_object_or_404(Listing, id=id)
-    if request.method == "POST":
-        comment_form = CreateNewComment(request.POST)
-        if comment_form.is_valid():
-            new_comment = comment_form.save()
-            new_comment.listings = listing
-            new_comment.save()
-            return HttpResponseRedirect(reverse("clicked_listing", id=id))
-    else:
-        comment_form = CreateNewComment()
-        comments = Comment.objects.filter(listings=listing)
-    return render(request, "auctions/clicked_listing.html", {"comment_form":comment_form,
-                                                             "listing":listing,
-                                                             "comments":comments})
-'''
+
+def my_listings(request):
+    user = request.user
+    created_listings = Listing.objects.filter(listing_created_by=user)
+    return render(request, "auctions/my_listings.html", {"created_listings":created_listings})
