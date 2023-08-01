@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
-from .forms import CreateNewListing, CreateNewComment, CreateNewBid
+from .forms import CreateNewListing, CreateNewComment, CreateNewBid, CloseBid
 from .models import User, Listing, Bidding, Comment
 from django.utils import timezone
 
@@ -82,10 +82,10 @@ def clicked_listing(request, id):
     clicked_listing = Listing.objects.get(id=id)
     comments = Comment.objects.filter(listings=clicked_listing)
     latest_bid = clicked_listing.bidding_set.order_by('-new_bid').first()
-    
-
-    # add comments
+    current_user = request.user
     if request.method == "POST":
+
+        # add comments
         comment_form = CreateNewComment(request.POST)
         if comment_form.is_valid():
             new_comment = comment_form.save(commit=False)
@@ -102,6 +102,7 @@ def clicked_listing(request, id):
             new_bid = bid_form.cleaned_data['new_bid']
             if latest_bid is None or new_bid > latest_bid.new_bid:
                 clicked_listing.listing_price = new_bid
+                clicked_listing.listing_bid_by = request.user
                 clicked_listing.save()
                 new_bid_form = bid_form.save(commit=False)
                 new_bid_form.bid_created_by = request.user
@@ -112,20 +113,32 @@ def clicked_listing(request, id):
             else:
                 return render(request, 'auctions/error.html', {'message': 'Your bid must be higher than the current bid.'})
 
+        # close bid
+        close_bid_form = CloseBid(request.POST, instance=clicked_listing)
+        if close_bid_form.is_valid():
+            close_bid_form.save()
+            return HttpResponseRedirect('/closed_listings/')
+        else:
+            close_bid_form = CloseBid(instance=clicked_listing)
+
     else:
         bid_form = CreateNewBid()
         comment_form = CreateNewComment()
         comments = Comment.objects.all()
+        close_bid_form = CloseBid()
     return render(request, "auctions/clicked_listing.html", {"comment_form":comment_form,
                                                              "comments":comments,
                                                              "clicked_listing":clicked_listing,
                                                              "bid_form":bid_form,
-                                                             "latest_bid":latest_bid
+                                                             "latest_bid":latest_bid,
+                                                             "close_bid_form": close_bid_form,
+                                                             "current_user":current_user
                                                              })
 
 def categories(request):
+    all_listings = Listing.objects.all()
     all_categories = Listing.objects.values('listing_category').distinct()
-    return render(request, "auctions/categories.html", {"all_categories":all_categories})
+    return render(request, "auctions/categories.html", {"all_categories":all_categories, "all_listings":all_listings})
 
 
 def clicked_categories(request, listing_category):
@@ -160,6 +173,5 @@ def remove_from_watchlist(request, id):
 def closed_listings(request):
     all_listings = Listing.objects.all()
     user = request.user
-    print(user)
     return render(request, "auctions/closed_listings.html", {"all_listings":all_listings, 
                                                              "user":user})

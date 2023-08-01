@@ -16,3 +16,8 @@ class CreateNewBid(forms.ModelForm):
         model = Bidding
         fields = ["new_bid"]
 
+class CloseBid(forms.ModelForm):
+    class Meta:
+        model = Listing
+        fields = ["listing_active"]
+

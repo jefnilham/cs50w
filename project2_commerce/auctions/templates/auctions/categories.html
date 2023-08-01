@@ -2,8 +2,12 @@
 
 {% block body %}
     <h2>Categories Available</h2>
-        {% for listings in all_categories %}
-            <a href="{% url 'clicked_categories' listings.listing_category %}">{{ listings.listing_category }}</a>
-            <br></br>
+
+        {% for item in all_listings %}
+            {% if item.listing_active %}
+                <a href="{% url 'clicked_categories' item.listing_category %}">{{ item.listing_category }}</a>
+                <br></br>
+            {% endif %}
         {% endfor %}
+    
 {% endblock %}
