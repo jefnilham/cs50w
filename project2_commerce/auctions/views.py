@@ -142,8 +142,13 @@ def categories(request):
 
 
 def clicked_categories(request, listing_category):
-    listing_category = Listing.objects.filter(listing_category=listing_category)
-    return render(request, "auctions/clicked_categories.html", {"listing_category":listing_category})
+    all_listings = Listing.objects.all()
+    all_categories = Listing.objects.values_list('listing_category', flat=True)
+    listings_in_category = Listing.objects.filter(listing_category=listing_category)
+    return render(request, "auctions/clicked_categories.html", {"listings_in_category":listings_in_category, 
+                                                                "all_listings":all_listings,
+                                                                "all_categories":all_categories,
+                                                                "listing_category":listing_category})
 
 
 def watchlist(request):
