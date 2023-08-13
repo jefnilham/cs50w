@@ -116,7 +116,8 @@ def clicked_listing(request, id):
         # close bid
         close_bid_form = CloseBid(request.POST, instance=clicked_listing)
         if close_bid_form.is_valid():
-            close_bid_form.save()
+            clicked_listing.listing_active = False
+            clicked_listing.save()
             return HttpResponseRedirect('/closed_listings/')
         else:
             close_bid_form = CloseBid(instance=clicked_listing)
@@ -137,8 +138,12 @@ def clicked_listing(request, id):
 
 def categories(request):
     all_listings = Listing.objects.all()
-    all_categories = Listing.objects.values('listing_category').distinct()
-    return render(request, "auctions/categories.html", {"all_categories":all_categories, "all_listings":all_listings})
+    all_active_listings = Listing.objects.filter(listing_active=True)
+    all_active_categories = all_active_listings.values_list('listing_category', flat=True).distinct()
+    print(all_active_categories)
+    return render(request, "auctions/categories.html", {"all_active_categories":all_active_categories, 
+                                                        "all_listings":all_listings,
+                                                        "all_active_listings":all_active_listings})
 
 
 def clicked_categories(request, listing_category):

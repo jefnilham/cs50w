@@ -19,5 +19,5 @@ class CreateNewBid(forms.ModelForm):
 class CloseBid(forms.ModelForm):
     class Meta:
         model = Listing
-        fields = ["listing_active"]
+        fields = []
 

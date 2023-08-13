@@ -3,14 +3,15 @@
 {% block body %}
     <h2>Active Items by Selected Category</h2>
         {% for item in all_listings %}
-            {% if item.listing_active %}
-                {% if item.listing_category == listing_category %}
+            {% if item.listing_category == listing_category %}
+                {% if item.listing_active %}
                     <a href="{% url 'clicked_listing' item.id %}">{{ item.listing_name }}</a>
                     <ul>{{item.listing_description}}</ul>
                     <ul>{{item.listing_price}}</ul>
                     <ul>{{item.listing_category}}</ul>
                     <ul><img src={{item.listing_image_url}}></ul>
-                {% endif %}
+
+                {%endif%}
             {% endif %}
         {% endfor %}
 {% endblock %}

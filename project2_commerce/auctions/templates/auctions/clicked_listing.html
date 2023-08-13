@@ -44,6 +44,7 @@
                 </button>
             </form>
             <br></br>
+            
             {% if clicked_listing.listing_created_by == current_user%}
                 <form method="post" action="{% url 'clicked_listing' clicked_listing.id %}">
                     {% csrf_token %}
