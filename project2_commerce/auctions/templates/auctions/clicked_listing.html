@@ -33,7 +33,8 @@
               {% if clicked_listing.listing_created_by == current_user%}
                 <form method="post" action="{% url 'clicked_listing' clicked_listing.id %}">
                   {% csrf_token %}
-                  {{ close_bid_form.as_p }} - Highest bidder goes to {{clicked_listing.listing_bid_by}}
+                  {{ close_bid_form.as_p }}
+                  Winning bidder with the highest bid goes to {{clicked_listing.listing_bid_by}}<br></br>
                   <button type="submit">Close Bid</button>
                 </form>
                {% endif %}
