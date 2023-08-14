@@ -1,6 +1,14 @@
 {% extends "auctions/layout.html" %}
 
+
+
+
+
+
+
+
 {% block body %}
+
     <h2>Active Listings</h2>
         <h3>{{all_listings.listing_name}}</h3>
 
@@ -9,13 +17,13 @@
                     <div class="card-columns">
                         {% for listings in all_listings %}
                         {% if listings.listing_active %}
-                        <div class="col-sm-14 mb-3">
-                        <div class="card">
+                        <div class="col-sm-12 mb-3">
+                        <div class="card text-center">
                             
                           <img src={{listings.listing_image_url}} class="card-img-top" alt="...">
                           <div class="card-body">
-                            <a href="{% url 'clicked_listing' listings.id %}">{{ listings.listing_name }}</a>
-                            <p class="card-text">{{listings.listing_description}}</p>
+                            <b><h4><a href="{% url 'clicked_listing' listings.id %}">{{ listings.listing_name }}</a></h4></b>
+                            <p class="card-text ">{{listings.listing_description}}</p>
                             <p class="card-text">{{listings.listing_price}}</p>
                             <p class="card-text">{{listings.listing_category}}</p>
                             <p class="card-text"><small class="text-muted">Created by {{listings.listing_created_by}}</small></p>

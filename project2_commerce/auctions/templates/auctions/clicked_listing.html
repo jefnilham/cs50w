@@ -2,56 +2,68 @@
 
 {% block body %}
 
-    <h2>Selected Listing</h2>
-        <h3>{{clicked_listing.listing_name}}</h3>
-            <ul>{{clicked_listing.listing_name}}</ul>
-            <ul>{{clicked_listing.listing_description}}</ul>
-            <ul>{{clicked_listing.listing_price}} </ul>
-            {% if user.is_authenticated %}
-                <form method="post" action="{% url 'clicked_listing' clicked_listing.id %}">
-                    {% csrf_token %}
-                    {{bid_form.as_p}}
-                    <button type="submit">Bid Higher</button>
-                </form>
-            {% endif %}
-            <ul>{{clicked_listing.listing_category}}</ul>
-            <ul><img src={{clicked_listing.listing_image_url}}></ul>
-            <br></br>
-        
-            {% if user.is_authenticated %}
-                <form method="post" action="{% url 'add_to_watchlist' clicked_listing.id %}">
-                    {% csrf_token %}
-                    <button type="submit">Add to Watchlist</button>
-                </form>
-                <br></br>
-            {% endif %}
+<div class="container">
+    <div class="d-flex mt-5 justify-content-center">
+        <div class="col-sm-6 mb-3">
+            <div class="card text-center">
+                <img src={{clicked_listing.listing_image_url}} class="card-img-top" alt="...">
+                <div class="card-body">
+                  <b><h4><a href="{% url 'clicked_listing' clicked_listing.id %}">{{ clicked_listing.listing_name }}</a></h4></b>
+                  <p class="card-text ">{{clicked_listing.listing_description}}</p>
+                  <p class="card-text">{{clicked_listing.listing_price}}</p>
+                  <p class="card-text">{{clicked_listing.listing_category}}</p>
+                  <p class="card-text"><small class="text-muted">Created by {{clicked_listing.listing_created_by}}</small></p>
+                  {% if user.is_authenticated %}
+                  <form method="post" action="{% url 'clicked_listing' clicked_listing.id %}">
+                      {% csrf_token %}
+                      {{bid_form.as_p}}
+                      <button type="submit">Bid Higher</button>
+                  </form>
+              {% endif %}
+              <br></br>
 
-        {% for comment in comments %}
-        <div>
-            {% if comment.listings == clicked_listing %}
-            <p>{{ comment.user.username }} - {{ comment.created_at }}</p>
-            <p>{{ comment.new_comment_text }}</p>
-            {% endif %}
-        </div>
-        {% endfor %}
-        
-        {% if user.is_authenticated %}
-            <form method = "post" action="{% url 'clicked_listing' clicked_listing.id %}">
-                {% csrf_token %}
-                {{comment_form.as_p}}
-                <button type="submit", name="save">
-                    Create New Comment
-                </button>
-            </form>
-            <br></br>
-            
-            {% if clicked_listing.listing_created_by == current_user%}
+              {% if user.is_authenticated %}
+                  <form method="post" action="{% url 'add_to_watchlist' clicked_listing.id %}">
+                      {% csrf_token %}
+                      <button type="submit">Add to Watchlist</button>
+                  </form>
+                  <br></br>
+              {% endif %}
+
+              {% if clicked_listing.listing_created_by == current_user%}
                 <form method="post" action="{% url 'clicked_listing' clicked_listing.id %}">
-                    {% csrf_token %}
-                    {{ close_bid_form.as_p }} - Highest bidder goes to {{clicked_listing.listing_bid_by}}
-                    <button type="submit">Close Bid</button>
+                  {% csrf_token %}
+                  {{ close_bid_form.as_p }} - Highest bidder goes to {{clicked_listing.listing_bid_by}}
+                  <button type="submit">Close Bid</button>
                 </form>
-            {% endif %}
-        {% endif %}
+               {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 mb-3">
+            <div class="card text-center p-4">
+                {% for comment in comments %}
+                <div>
+                    {% if comment.listings == clicked_listing %}
+                    <p>{{ comment.user.username }} - {{ comment.created_at }}</p>
+                    <p>{{ comment.new_comment_text }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                
+                {% if user.is_authenticated %}
+                    <form method = "post" action="{% url 'clicked_listing' clicked_listing.id %}">
+                        {% csrf_token %}
+                        {{comment_form.as_p}}
+                        <button type="submit", name="save">
+                            Create New Comment
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}
